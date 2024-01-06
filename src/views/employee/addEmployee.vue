@@ -33,11 +33,13 @@
 </template>
 
 <script lang='ts'>
-import { addEmployee } from '@/api/employee'
+import { addEmployee,queryEmployeeById } from '@/api/employee'
 
 export default {
   data() {
     return {
+      //optType :'add',//当前的操作类型，新增还是修改
+      optType:'',
       ruleForm: {
         name: '',
         username: '',
@@ -58,12 +60,25 @@ export default {
       }
     }
   },
+  created(){
+   //获取路由参数（id）如果有则为修改参数，无则为添加操作
+    this.optType = this.$route.query.id ?'update':'add'
+    if (this.optType === 'update'){
+      //修改操作，需要查询员工信息用于页面回显
+      queryEmployeeById(this.$route.query.id).then(res =>{
+        if (res.data.code === 1){
+          this.ruleForm = res.data.data
+        }
+      })
+    }
+  },
   methods: {
     submitForm(formName, isContinue) {
       // 进行表单检验
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // 表单校验通过，发起Ajax请求，将数据提交到后端
+
           addEmployee(this.ruleForm).then((res) => {
             if (res.data.code === 1) {
               this.$message.success('员工添加成功！')

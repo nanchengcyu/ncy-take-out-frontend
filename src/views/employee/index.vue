@@ -100,6 +100,17 @@ export default {
         })
       })
 
+    },
+    handleUpdateEmp(row){
+      if (row.username === 'admin'){
+        this.$message.error('admin为系统管理员账号，不能修改')
+        return
+      }
+      //跳转到修改页面。通过地址栏传递参数
+      this.$router.push({
+        path:'/employee/add',
+        // query:{id,row.id}
+      })
     }
 
   }

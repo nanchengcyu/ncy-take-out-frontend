@@ -43,3 +43,10 @@ export const addEmployee = (params: any) =>
     'data': params //请求体传参
   })
 
+//根据id查询员工 ，此处是为了在修改员工页面时，展示要修改的员工对象属性，从而进行修改
+export const queryEmployeeById = (id: number) =>
+  request({
+    'url': `/employee/${id}`,
+    'method': 'get',
+
+  })
